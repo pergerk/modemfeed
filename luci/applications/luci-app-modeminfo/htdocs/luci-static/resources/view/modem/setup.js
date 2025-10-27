@@ -23,7 +23,7 @@ var callSerialPort = rpc.declare({
 	filter: function(list, params) {
 		var rv = [];
 		for (var i = 0; i < list.length; i++)
-			if (list[i].name.match(/^ttyACM/) || list[i].name.match(/^ttyUSB/))
+			if (list[i].name.match(/^ttyACM/) || list[i].name.match(/^ttyUSB/) || list[i].name.match(/^wwan\dat\d/))
 				rv.push(params.path + list[i].name);
 		return rv.sort((a, b) => a.name > b.name);
 	}
@@ -100,7 +100,7 @@ return view.extend({
 		o = s.option(form.ListValue, 'device_qmi', _('Data port'), qdesc);
 		o.load = function(section_id) {
 			return callQMIPort('/dev/').then(L.bind(function(devices) {
-				this.keylist = []; 
+				this.keylist = [];
 				this.vallist = [];
 				for (var i = 0; i < devices.length; i++)
 					this.value(devices[i]);
@@ -120,5 +120,5 @@ return view.extend({
 		o.depends('qmi_mode', '1');
 
 		return m.render();
-	}	
+	}
 });
